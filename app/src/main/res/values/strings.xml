@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Authenticationapp</string>
+    <string name="create_new_account" />
+    <string name="submit">submit</string>
+    <string name="signup">signup</string>
+    <string name="login">login</string>
+    <string name="enter_name">enter_name</string>
+    <string name="email_id">email_id</string>
+    <string name="mobile_no">mobile_no</string>
+    <string name="password">password</string>
+    <string name="logout">Logout</string>
+</resources>
