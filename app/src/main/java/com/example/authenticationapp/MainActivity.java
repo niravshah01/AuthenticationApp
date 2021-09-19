@@ -1,25 +1,26 @@
 package com.example.authenticationapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    FirebaseAuth fauth;
-    Button logout;
+    BottomNavigationView bnv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        logout = findViewById(R.id.logout);
+        FirebaseAuth fauth;
         fauth = FirebaseAuth.getInstance();
 
         if(fauth.getCurrentUser()==null){
@@ -27,12 +28,30 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        logout.setOnClickListener(new View.OnClickListener() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.framecontainer,new HomeFragment()).commit();
+
+        bnv = findViewById(R.id.bottom_navigation);
+        bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                fauth.signOut();
-                Intent intent1 = new Intent(MainActivity.this, LoginAct.class);
-                startActivity(intent1);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                Fragment fragment = null;
+
+                switch (item.getItemId()){
+                    case R.id.menu_home:
+                        fragment = new HomeFragment();
+                        break;
+                    case R.id.menu_explore:
+                        fragment = new ExploreFragment();
+                        break;
+                    case R.id.menu_about:
+                        fragment = new AboutFragment();
+                        break;
+                }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.framecontainer,fragment).commit();
+
+                return true;
             }
         });
     }
